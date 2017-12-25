@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_color_picker"
+            android:icon="@drawable/triangle"
+            android:title="@string/nav_color_picker" />
+        <item
+            android:id="@+id/nav_color_pattern"
+            android:icon="@drawable/controls"
+            android:title="@string/nav_color_pattern" />
+        <item
+            android:id="@+id/nav_my_colors"
+            android:icon="@drawable/list"
+            android:title="@string/nav_my_colors" />
+    </group>
+
+    <item android:title="@string/nav_settings">
+        <menu>
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="@string/nav_settings" />
+        </menu>
+    </item>
+
+</menu>
