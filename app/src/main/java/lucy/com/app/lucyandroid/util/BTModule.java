@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.ParcelUuid;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.io.IOException;
@@ -38,6 +39,21 @@ public class BTModule {
         init();
     }
 
+    public void write(int mode, int red, int green, int blue, int delya, boolean invert, Runnable callback) {
+        String msg = intTo3DigitString(mode) + "-" +
+                intTo3DigitString(red) + "-" +
+                intTo3DigitString(green) + "-" +
+                intTo3DigitString(blue) + "-" +
+                intTo3DigitString(delya) + "-" +
+                intTo3DigitString(invert ? 1 : 0);
+        if (callback != null) {
+            write(msg, callback);
+        } else {
+            write(msg);
+        }
+
+    }
+
     public void write(String s, Runnable callback) {
         writerCallback = callback;
         write(s);
@@ -54,6 +70,12 @@ public class BTModule {
         if (!initThread.isAlive()) {
             init();
         }
+    }
+
+    @NonNull
+    private String intTo3DigitString(int c) {
+        String s = "00" + String.valueOf(c);
+        return s.substring(s.length() - 3, s.length());
     }
 
     private Runnable writer(final String s) {

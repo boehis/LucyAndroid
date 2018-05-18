@@ -6,6 +6,7 @@ import android.widget.SeekBar;
 import lucy.com.app.lucyandroid.util.ColorObserver;
 import lucy.com.app.lucyandroid.util.Mode;
 import lucy.com.app.lucyandroid.util.ObservableColor;
+import lucy.com.app.lucyandroid.util.Util;
 
 public class ColorSeekBarChangeListener implements SeekBar.OnSeekBarChangeListener {
 
@@ -27,10 +28,10 @@ public class ColorSeekBarChangeListener implements SeekBar.OnSeekBarChangeListen
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-        if(!update){
+        if (!update) {
             progressChanged = true;
             color.update(i, mode);
-            view.setBackgroundColor(color.get());
+            view.setBackgroundColor(Util.getAbsColor(color.get()));
             progressChanged = false;
         }
     }

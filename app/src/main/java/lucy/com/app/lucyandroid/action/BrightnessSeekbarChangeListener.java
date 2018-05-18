@@ -6,6 +6,7 @@ import android.widget.SeekBar;
 
 import lucy.com.app.lucyandroid.util.ColorObserver;
 import lucy.com.app.lucyandroid.util.ObservableColor;
+import lucy.com.app.lucyandroid.util.Util;
 
 
 public class BrightnessSeekbarChangeListener implements SeekBar.OnSeekBarChangeListener {
@@ -26,13 +27,13 @@ public class BrightnessSeekbarChangeListener implements SeekBar.OnSeekBarChangeL
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-        if(!update){
+        if (!update) {
             progressChanged = true;
             float[] hsv = {0, 0, 0};
             Color.colorToHSV(color.get(), hsv);
             hsv[2] = (float) i / seekBar.getMax();
             color.set(Color.HSVToColor(hsv));
-            view.setBackgroundColor(color.get());
+            view.setBackgroundColor(Util.getAbsColor(color.get()));
             progressChanged = false;
         }
     }
