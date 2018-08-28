@@ -1,8 +1,13 @@
 package lucy.com.app.lucyandroid.util;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Handler;
 import android.os.ParcelUuid;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -14,13 +19,15 @@ import java.util.Set;
 import java.util.UUID;
 
 
-public class BTModule {
+public class BTModuleOld {
 
-    private static BTModule btModule = null;
+    private static BTModuleOld btModule = null;
+    private static Activity activity;
 
-    public static BTModule getInstance() {
+    public static BTModuleOld getInstance(Activity mainActivity) {
         if (btModule == null) {
-            btModule = new BTModule();
+            btModule = new BTModuleOld();
+            activity = mainActivity;
         }
         return btModule;
     }
@@ -35,7 +42,7 @@ public class BTModule {
     private OutputStream outputStream;
     private InputStream inStream;
 
-    private BTModule() {
+    private BTModuleOld() {
         init();
     }
 
@@ -94,6 +101,27 @@ public class BTModule {
                 }
             }
         };
+    }
+
+    private BluetoothAdapter bluetoothAdapter;
+    private BluetoothManager bluetoothManager;
+    private Handler handler;
+    private void newInit() {
+        bluetoothManager = (BluetoothManager) activity.getSystemService(Context.BLUETOOTH_SERVICE);
+        bluetoothAdapter = bluetoothManager.getAdapter();
+        if (bluetoothAdapter == null || !bluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            activity.startActivity(enableBtIntent);
+        }
+        if(bluetoothAdapter.isEnabled()) {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                }
+            }, 200);
+        }
+
     }
 
     private void init() {

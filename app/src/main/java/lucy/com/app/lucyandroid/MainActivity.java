@@ -1,5 +1,6 @@
 package lucy.com.app.lucyandroid;
 
+import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -12,12 +13,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import lucy.com.app.lucyandroid.util.BTModuleOld;
+import lucy.com.app.lucyandroid.util.Bluetooth.BTModule;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private ColorPickerFragment colorPickerFragment = new ColorPickerFragment();
-    private ColorPattern colorPattern = new ColorPattern();
-
+    private SendColorFragment sendColorFragment = new SendColorFragment();
+    private ColorPatternFragment colorPatternFragment = new ColorPatternFragment();
+    private SettingsFragment settingsFragment = new SettingsFragment();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +38,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.content,colorPickerFragment).commit();
+        BTModule.init(this);
+        getSupportFragmentManager().beginTransaction().replace(R.id.content, sendColorFragment).commit();
 
     }
 
@@ -77,14 +82,14 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         Fragment fragment;
         if (id == R.id.nav_color_picker) {
-            fragment = colorPickerFragment;
+            fragment = sendColorFragment;
         } else if (id == R.id.nav_color_pattern) {
-            fragment = colorPattern;
-        } else {
-            fragment = colorPickerFragment;
-        }/*else if (id == R.id.nav_my_colors) {
-
+            fragment = colorPatternFragment;
         } else if (id == R.id.nav_settings) {
+            fragment = settingsFragment;
+        } else {
+            fragment = sendColorFragment;
+        }/*else if (id == R.id.nav_my_colors) {
 
         }*/
 

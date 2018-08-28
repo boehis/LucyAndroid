@@ -15,6 +15,15 @@
     <string name="nav_my_colors">My Colors</string>
     <string name="nav_settings">Settings</string>
 
+    <string-array name="modes_array">
+        <item>Flash</item>
+        <item>Up/Down</item>
+        <item>Turn</item>
+    </string-array>
+    <string name="delay">Delay</string>
+    <string name="invert">Invert</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="selectLucy">Select Lucy</string>
 </resources>
