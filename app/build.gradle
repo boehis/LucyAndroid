@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "lucy.com.app.lucyandroid"
+        applicationId "luna.com.app.lunaandroid"
         minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
