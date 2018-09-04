@@ -1,24 +1,23 @@
-package com.stan.app.lunaandroid;
+package com.stan.app.lunaandroid.colorpicker;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.stan.app.lunaandroid.util.Bluetooth.BTColorWriter;
+import com.stan.app.lunaandroid.R;
 import com.stan.app.lunaandroid.util.ColorPicker;
 import com.stan.app.lunaandroid.util.ObservableColor;
 
 
-public class SendColorFragment extends Fragment implements ColorPicker {
+public class SolidColorPickerFragment extends Fragment implements ColorPicker {
 
     private View view;
 
-    public SendColorFragment() {
+    public SolidColorPickerFragment() {
         // Required empty public constructor
     }
 
@@ -31,7 +30,7 @@ public class SendColorFragment extends Fragment implements ColorPicker {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_color_picker, container, false);
+        return inflater.inflate(R.layout.fragment_solid_color_picker, container, false);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -44,7 +43,8 @@ public class SendColorFragment extends Fragment implements ColorPicker {
 
     @Override
     public void pickedColor(ObservableColor color) {
-        BTColorWriter.write(1, color.red(), color.green(), color.blue(), 0, false, new Runnable() {
+        //Snackbar.make(view, "Bluetooth not available on this device", Snackbar.LENGTH_LONG);
+/*        BTColorWriter.write(1, color.red(), color.green(), color.blue(), 0, false, new Runnable() {
             @Override
             public void run() {
                 if (!BTColorWriter.isWriteSuccess()) {
@@ -54,9 +54,9 @@ public class SendColorFragment extends Fragment implements ColorPicker {
                         public void onClick(View view) {
                             onFabClick(view);
                         }
-                    });*/
+                    });
                 }
             }
-        });
+        });*/
     }
 }

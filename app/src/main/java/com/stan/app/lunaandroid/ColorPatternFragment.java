@@ -16,7 +16,7 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 
-import com.stan.app.lunaandroid.util.BTModuleOld;
+import com.stan.app.lunaandroid.colorpicker.ColorPickerActivity;
 import com.stan.app.lunaandroid.util.Bluetooth.BTColorWriter;
 import com.stan.app.lunaandroid.util.Util;
 

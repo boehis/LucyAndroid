@@ -4,8 +4,8 @@ import android.view.View;
 
 public class TriangleDetail {
 
-    private float fullWidth;
-    private float fullHeight;
+    private double fullWidth;
+    private double fullHeight;
     private double triangleWidth;
     private double triangleHeight;
     private double heightDiff;
@@ -16,13 +16,13 @@ public class TriangleDetail {
         this.view = view;
         fullWidth = view.getWidth();
         fullHeight = view.getHeight();
-        triangleWidth = view.getWidth();
-        triangleHeight = view.getHeight();
+        triangleWidth = fullWidth;
+        triangleHeight = fullHeight;
         heightDiff = 0;
         widthDiff = 0;
-        if (view.getHeight() < (Math.sqrt(3) / 2 * fullWidth)) {
+        if (fullHeight < (Math.sqrt(3) / 2 * fullWidth)) {
             //space on sides
-            triangleWidth = ((double) view.getHeight()) * 2 / Math.sqrt(3);
+            triangleWidth = fullHeight * 2 / Math.sqrt(3);
             widthDiff = (fullWidth - triangleWidth) / 2;
         } else {
             //space top / bottom
@@ -35,11 +35,11 @@ public class TriangleDetail {
         return view;
     }
 
-    public float getFullWidth() {
+    public double getFullWidth() {
         return fullWidth;
     }
 
-    public float getFullHeight() {
+    public double getFullHeight() {
         return fullHeight;
     }
 

@@ -1,4 +1,4 @@
-package com.stan.app.lunaandroid;
+package com.stan.app.lunaandroid.colorpicker;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,9 +13,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 
-import com.stan.app.lunaandroid.action.BrightnessSeekbarChangeListener;
-import com.stan.app.lunaandroid.action.ColorSeekBarChangeListener;
-import com.stan.app.lunaandroid.action.triangle.ClickTriangleColorChangeListener;
+import com.stan.app.lunaandroid.R;
+import com.stan.app.lunaandroid.colorpicker.action.BrightnessSeekbarChangeListener;
+import com.stan.app.lunaandroid.colorpicker.action.ClickTriangleColorChangeListener;
+import com.stan.app.lunaandroid.colorpicker.action.ColorSeekBarChangeListener;
 import com.stan.app.lunaandroid.util.ColorPicker;
 import com.stan.app.lunaandroid.util.Mode;
 import com.stan.app.lunaandroid.util.ObservableColor;
@@ -24,6 +25,7 @@ import com.stan.app.lunaandroid.util.ObservableColor;
 public class ColorPickerFragment extends Fragment {
 
     private ObservableColor color = new ObservableColor();
+
     public ColorPickerFragment() {
     }
 
@@ -32,10 +34,10 @@ public class ColorPickerFragment extends Fragment {
         super.onAttach(context);
 
         // check if parent Fragment / Activity implements listener
-        if (getParentFragment() instanceof ColorPicker || getActivity() instanceof ColorPicker ) {
-            if(getParentFragment() != null){
+        if (getParentFragment() instanceof ColorPicker || getActivity() instanceof ColorPicker) {
+            if (getParentFragment() != null) {
                 ((ColorPicker) getParentFragment()).pickedColor(color);
-            }else {
+            } else {
                 ((ColorPicker) getActivity()).pickedColor(color);
             }
         } else {

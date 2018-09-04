@@ -26,4 +26,13 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="selectLuna">Select Luna</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="pick_device">Select your Lunas</string>
+    <string name="automatically_connect">Connect to \'My Lunas\' automatically</string>
+    <string name="add_devices">Add selected devices to \'My Lunas\'</string>
+    <string name="rescan">Rescan</string>
+    <string name="scanning">Scanning...</string>
+    <string name="scanningInfo">Scanning for known Lunas... Make sure your Luna is near you and turned on.</string>
+    <string name="connection_failed">Could not connect</string>
 </resources>

@@ -1,36 +1,38 @@
-package com.stan.app.lunaandroid.action;
+package com.stan.app.lunaandroid.colorpicker.action;
 
+import android.graphics.Color;
 import android.view.View;
 import android.widget.SeekBar;
 
 import com.stan.app.lunaandroid.util.ColorObserver;
-import com.stan.app.lunaandroid.util.Mode;
 import com.stan.app.lunaandroid.util.ObservableColor;
 import com.stan.app.lunaandroid.util.Util;
 
-public class ColorSeekBarChangeListener implements SeekBar.OnSeekBarChangeListener {
 
-    private Mode mode;
+public class BrightnessSeekbarChangeListener implements SeekBar.OnSeekBarChangeListener {
+
     private View view;
     private ObservableColor color;
     private SeekBar seekBar;
     private boolean progressChanged = false;
     private boolean update = false;
 
-    public ColorSeekBarChangeListener(Mode mode, View view, ObservableColor color, SeekBar seekBar) {
-        this.mode = mode;
+    public BrightnessSeekbarChangeListener(View view, ObservableColor color, SeekBar seekBar) {
         this.view = view;
         this.color = color;
         this.seekBar = seekBar;
 
-        this.color.addObserver(new MyColorObserver());
+        color.addObserver(new MyColorObserver());
     }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
         if (!update) {
             progressChanged = true;
-            color.update(i, mode);
+            float[] hsv = {0, 0, 0};
+            Color.colorToHSV(color.get(), hsv);
+            hsv[2] = (float) i / seekBar.getMax();
+            color.set(Color.HSVToColor(hsv));
             view.setBackgroundColor(Util.getAbsColor(color.get()));
             progressChanged = false;
         }
@@ -46,13 +48,17 @@ public class ColorSeekBarChangeListener implements SeekBar.OnSeekBarChangeListen
 
     }
 
+
     class MyColorObserver implements ColorObserver {
         @Override
         public void update(int c) {
             if (!progressChanged) {
                 update = true;
-                seekBar.setProgress(color.get(mode));
+                float[] hsv = {0, 0, 0};
+                Color.colorToHSV(color.get(), hsv);
+                seekBar.setProgress((int) (hsv[2] * seekBar.getMax()));
                 update = false;
+
             }
         }
     }

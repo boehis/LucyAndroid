@@ -1,4 +1,4 @@
-package com.stan.app.lunaandroid.action.triangle;
+package com.stan.app.lunaandroid.colorpicker.action;
 
 import com.stan.app.lunaandroid.util.ColorObserver;
 import com.stan.app.lunaandroid.util.Util;
