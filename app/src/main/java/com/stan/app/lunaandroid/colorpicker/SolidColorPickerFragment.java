@@ -4,18 +4,17 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.stan.app.lunaandroid.R;
-import com.stan.app.lunaandroid.util.ColorPicker;
+import com.stan.app.lunaandroid.util.ColorChangeListener;
 import com.stan.app.lunaandroid.util.ObservableColor;
 
 
-public class SolidColorPickerFragment extends Fragment implements ColorPicker {
-
-    private View view;
+public class SolidColorPickerFragment extends Fragment implements ColorChangeListener {
 
     public SolidColorPickerFragment() {
         // Required empty public constructor
@@ -37,12 +36,12 @@ public class SolidColorPickerFragment extends Fragment implements ColorPicker {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.view = view;
     }
 
 
     @Override
-    public void pickedColor(ObservableColor color) {
+    public void onColorChanged(int color) {
+        Log.d("asfd", color+"");
         //Snackbar.make(view, "Bluetooth not available on this device", Snackbar.LENGTH_LONG);
 /*        BTColorWriter.write(1, color.red(), color.green(), color.blue(), 0, false, new Runnable() {
             @Override

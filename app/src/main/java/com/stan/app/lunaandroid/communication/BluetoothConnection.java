@@ -28,7 +28,7 @@ public class BluetoothConnection {
     private void connectDevices(final BluetoothAdapter btAdapter, final Activity activity, final FragmentManager fragmentManager) {
         ArrayList<ScanFilter> filters = new ArrayList<>();
         ScanCallback scanCallback;
-        if(PersistantData.getBoolean(PersistantData.CONNECT_AUTOMATICALLY, activity)){
+        if(PersistantData.isConnectAutomatically(activity)){
             final LoaderDialogFragment dialog = new LoaderDialogFragment();
             dialog.onAttach(activity.getApplicationContext());
             dialog.show(fragmentManager, LoaderDialogFragment.TAG);

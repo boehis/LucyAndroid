@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 
@@ -17,14 +18,20 @@ import com.stan.app.lunaandroid.R;
 import com.stan.app.lunaandroid.colorpicker.action.BrightnessSeekbarChangeListener;
 import com.stan.app.lunaandroid.colorpicker.action.ClickTriangleColorChangeListener;
 import com.stan.app.lunaandroid.colorpicker.action.ColorSeekBarChangeListener;
-import com.stan.app.lunaandroid.util.ColorPicker;
+import com.stan.app.lunaandroid.util.ColorChangeListener;
+import com.stan.app.lunaandroid.util.ColorObserver;
+import com.stan.app.lunaandroid.util.ColorReceiver;
 import com.stan.app.lunaandroid.util.Mode;
 import com.stan.app.lunaandroid.util.ObservableColor;
+import com.stan.app.lunaandroid.util.PersistantData;
+import com.stan.app.lunaandroid.util.Util;
 
 
 public class ColorPickerFragment extends Fragment {
 
     private ObservableColor color = new ObservableColor();
+    private ColorChangeListener listener;
+    private boolean isPaused = false;
 
     public ColorPickerFragment() {
     }
@@ -34,16 +41,21 @@ public class ColorPickerFragment extends Fragment {
         super.onAttach(context);
 
         // check if parent Fragment / Activity implements listener
-        if (getParentFragment() instanceof ColorPicker || getActivity() instanceof ColorPicker) {
+        if (getParentFragment() instanceof ColorReceiver || getActivity() instanceof ColorReceiver) {
             if (getParentFragment() != null) {
-                ((ColorPicker) getParentFragment()).pickedColor(color);
+                ((ColorReceiver) getParentFragment()).onReceiveColor(color);
             } else {
-                ((ColorPicker) getActivity()).pickedColor(color);
+                ((ColorReceiver) getActivity()).onReceiveColor(color);
             }
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement ColorPicker");
         }
+    }
+
+    public void setListener(ColorChangeListener listener) {
+        this.listener = listener;
+    }
+
+    public ObservableColor getColor() {
+        return color;
     }
 
     @Override
@@ -55,8 +67,15 @@ public class ColorPickerFragment extends Fragment {
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        color.addObserver(new ColorObserver() {
+            @Override
+            public void update(int color) {
+                PersistantData.setLastPickedColor(color);
+                if (listener != null) listener.onColorChanged(color);
+            }
+        });
 
         final ConstraintLayout triangleBackground = view.findViewById(R.id.triangleBackground);
 
@@ -71,14 +90,20 @@ public class ColorPickerFragment extends Fragment {
         skBrightness.setOnSeekBarChangeListener(new BrightnessSeekbarChangeListener(triangleBackground, color, skBrightness));
 
         ImageView colorTriangle = view.findViewById(R.id.color_triangle);
-        colorTriangle.setOnTouchListener(new ClickTriangleColorChangeListener(triangleBackground, (Button) view.findViewById(R.id.color_selector_circle), color));
+        Button colorSelector = view.findViewById(R.id.color_selector_circle);
+        colorTriangle.setOnTouchListener(new ClickTriangleColorChangeListener(triangleBackground, colorSelector, color));
         colorTriangle.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 return false;
             }
         });
-
-        skBrightness.setProgress(skBrightness.getMax());
+        view.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                color.set(PersistantData.getLastPickedColor(getContext()));
+                triangleBackground.setBackgroundColor(Util.getAbsColorWithBlack(color.get()));
+            }
+        });
     }
 }

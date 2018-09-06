@@ -2,7 +2,6 @@ package com.stan.app.lunaandroid.dialog;
 
 
 import android.app.Dialog;
-import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -60,10 +59,10 @@ public class CheckListDialogFragment extends DialogFragment {
                 .setView(view)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        PersistantData.update(PersistantData.CONNECT_AUTOMATICALLY, checkBoxAutoConnect.isChecked(), getContext());
-                        PersistantData.set(PersistantData.CURRENT_LUNAS, new HashSet<>(getSelectedItems()), getContext());
+                        PersistantData.setConnectAutomatically(checkBoxAutoConnect.isChecked());
+                        PersistantData.setCurrentLunas(new HashSet<>(getSelectedItems()));
                         if (checkBoxAddDevices.isChecked()) {
-                            PersistantData.update(PersistantData.CURRENT_LUNAS, new HashSet<>(getSelectedItems()), getContext());
+                            PersistantData.addToMyLunas(new HashSet<>(getSelectedItems()));
                         }
                         listener.onDialogPositiveClick(CheckListDialogFragment.this, TAG);
                     }
@@ -96,9 +95,9 @@ public class CheckListDialogFragment extends DialogFragment {
     }
 
     private void onDialogCreated(View view) {
-        final Set<String> myDevices = PersistantData.getStrings(PersistantData.MY_LUNAS, getContext());
+        final Set<String> myDevices = PersistantData.getMyLunas(getContext());
         btDeviceList = view.findViewById(R.id.btDeviceList);
-        adapter = new ArrayAdapter<>(getContext(), R.layout.select_dialog_multichoice, new ArrayList<CharSequence>());
+        adapter = new ArrayAdapter<>(getContext(), R.layout.listview_multichoice, new ArrayList<CharSequence>());
         btDeviceList.setAdapter(adapter);
         btDeviceList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -126,7 +125,7 @@ public class CheckListDialogFragment extends DialogFragment {
             checkBoxAutoConnect.setEnabled(false);
         }
         checkBoxAddDevices.setEnabled(false);
-        checkBoxAutoConnect.setSelected(PersistantData.getBoolean(PersistantData.CONNECT_AUTOMATICALLY,getContext()));
+        checkBoxAutoConnect.setSelected(PersistantData.isConnectAutomatically(getContext()));
     }
 
     private void addItems(String... items) {
@@ -141,8 +140,8 @@ public class CheckListDialogFragment extends DialogFragment {
     }
 
     private void setCheckedItems() {
-        Set<String> devices = PersistantData.getStrings(PersistantData.MY_LUNAS, getContext());
-        devices.addAll(PersistantData.getStrings(PersistantData.CURRENT_LUNAS, getContext()));
+        Set<String> devices = PersistantData.getMyLunas(getContext());
+        devices.addAll(PersistantData.getCurrentLunas(getContext()));
 
         for (int i = 0; i < adapter.getCount(); i++) {
             if (devices.contains(Objects.requireNonNull(adapter.getItem(i)).toString())) {

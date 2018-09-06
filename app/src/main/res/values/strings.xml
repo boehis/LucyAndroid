@@ -32,7 +32,17 @@
     <string name="automatically_connect">Connect to \'My Lunas\' automatically</string>
     <string name="add_devices">Add selected devices to \'My Lunas\'</string>
     <string name="rescan">Rescan</string>
-    <string name="scanning">Scanning...</string>
-    <string name="scanningInfo">Scanning for known Lunas... Make sure your Luna is near you and turned on.</string>
+    <string name="scanning">Scanning…</string>
+    <string name="scanningInfo">Scanning for known Lunas… Make sure your Luna is near you and turned on.</string>
     <string name="connection_failed">Could not connect</string>
+    <string name="battery">Battery</string>
+    <string name="add_device2">Add to \'My Lunas\'</string>
+    <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="remove_device">Remove from \'My Lunas\'</string>
+    <string name="move_element">move element</string>
+    <string name="compy_color">compy color</string>
+    <string name="clear_all">Clear all</string>
+    <string name="pick_mode">Pick mode</string>
+    <string name="max_colors_warnings">Cannot add more than 10 colors.</string>
 </resources>

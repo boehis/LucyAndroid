@@ -17,13 +17,25 @@ public class BrightnessSeekbarChangeListener implements SeekBar.OnSeekBarChangeL
     private boolean progressChanged = false;
     private boolean update = false;
 
-    public BrightnessSeekbarChangeListener(View view, ObservableColor color, SeekBar seekBar) {
+    public BrightnessSeekbarChangeListener(View view, final ObservableColor color, final SeekBar seekBar) {
         this.view = view;
         this.color = color;
         this.seekBar = seekBar;
 
-        color.addObserver(new MyColorObserver());
+        color.addObserver(new ColorObserver() {
+            @Override
+            public void update(int c) {
+                if (!progressChanged) {
+                    update = true;
+                    float[] hsv = {0, 0, 0};
+                    Color.colorToHSV(color.get(), hsv);
+                    seekBar.setProgress((int) (hsv[2] * seekBar.getMax()));
+                    update = false;
+                }
+            }
+        });
     }
+
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -33,7 +45,7 @@ public class BrightnessSeekbarChangeListener implements SeekBar.OnSeekBarChangeL
             Color.colorToHSV(color.get(), hsv);
             hsv[2] = (float) i / seekBar.getMax();
             color.set(Color.HSVToColor(hsv));
-            view.setBackgroundColor(Util.getAbsColor(color.get()));
+            view.setBackgroundColor(Util.getAbsColorWithBlack(color.get()));
             progressChanged = false;
         }
     }
@@ -46,20 +58,5 @@ public class BrightnessSeekbarChangeListener implements SeekBar.OnSeekBarChangeL
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
 
-    }
-
-
-    class MyColorObserver implements ColorObserver {
-        @Override
-        public void update(int c) {
-            if (!progressChanged) {
-                update = true;
-                float[] hsv = {0, 0, 0};
-                Color.colorToHSV(color.get(), hsv);
-                seekBar.setProgress((int) (hsv[2] * seekBar.getMax()));
-                update = false;
-
-            }
-        }
     }
 }

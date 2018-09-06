@@ -13,17 +13,24 @@ public class ColorSeekBarChangeListener implements SeekBar.OnSeekBarChangeListen
     private Mode mode;
     private View view;
     private ObservableColor color;
-    private SeekBar seekBar;
     private boolean progressChanged = false;
     private boolean update = false;
 
-    public ColorSeekBarChangeListener(Mode mode, View view, ObservableColor color, SeekBar seekBar) {
+    public ColorSeekBarChangeListener(final Mode mode, View view, final ObservableColor color, final SeekBar seekBar) {
         this.mode = mode;
         this.view = view;
         this.color = color;
-        this.seekBar = seekBar;
 
-        this.color.addObserver(new MyColorObserver());
+        this.color.addObserver(new ColorObserver() {
+            @Override
+            public void update(int c) {
+                if (!progressChanged) {
+                    update = true;
+                    seekBar.setProgress(color.get(mode));
+                    update = false;
+                }
+            }
+        });
     }
 
     @Override
@@ -31,7 +38,7 @@ public class ColorSeekBarChangeListener implements SeekBar.OnSeekBarChangeListen
         if (!update) {
             progressChanged = true;
             color.update(i, mode);
-            view.setBackgroundColor(Util.getAbsColor(color.get()));
+            view.setBackgroundColor(Util.getAbsColorWithBlack(color.get()));
             progressChanged = false;
         }
     }
@@ -44,16 +51,5 @@ public class ColorSeekBarChangeListener implements SeekBar.OnSeekBarChangeListen
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
 
-    }
-
-    class MyColorObserver implements ColorObserver {
-        @Override
-        public void update(int c) {
-            if (!progressChanged) {
-                update = true;
-                seekBar.setProgress(color.get(mode));
-                update = false;
-            }
-        }
     }
 }

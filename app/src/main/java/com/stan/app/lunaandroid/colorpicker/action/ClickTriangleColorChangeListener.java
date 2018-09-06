@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.stan.app.lunaandroid.R;
+import com.stan.app.lunaandroid.util.ColorObserver;
 import com.stan.app.lunaandroid.util.Mode;
 import com.stan.app.lunaandroid.util.ObservableColor;
 import com.stan.app.lunaandroid.util.Point;
@@ -22,17 +23,24 @@ public class ClickTriangleColorChangeListener implements View.OnTouchListener {
     private Button selector;
     private ObservableColor color;
     private View parent;
-    private boolean progressChanged;
+    private boolean isColorChangeFromProgressbar;
     private double xPos = 0;
     private double yPos = 0;
     private TriangleDetail triDet;
 
-    public ClickTriangleColorChangeListener(View parent, Button selector, ObservableColor color) {
+    public ClickTriangleColorChangeListener(final View parent, Button selector, final ObservableColor color) {
         this.selector = selector;
         this.color = color;
         this.parent = parent;
 
-        this.color.addObserver(new TriangleColorObserver(this));
+        this.color.addObserver(new ColorObserver() {
+            @Override
+            public void update(int c) {
+                if (!isColorChangeFromProgressbar) {
+                    colorToTrianglePos(Util.getAbsColor(c));
+                }
+            }
+        });
     }
 
     @Override
@@ -44,12 +52,12 @@ public class ClickTriangleColorChangeListener implements View.OnTouchListener {
         if(motionEvent.getAction() == MotionEvent.ACTION_DOWN || motionEvent.getAction() == MotionEvent.ACTION_MOVE){
             moveElement(motionEvent.getX(), motionEvent.getY());
             updateColor();
-            parent.setBackgroundColor(Util.getAbsColor(color.get()));
+            parent.setBackgroundColor(Util.getAbsColorWithBlack(color.get()));
         }
         return false;
     }
 
-    public void colorToTrianglePos(int absColor) {
+    private void colorToTrianglePos(int absColor) {
         View view = parent.findViewById(R.id.selector_holder);
         triDet = new TriangleDetail(view);
 
@@ -157,11 +165,11 @@ public class ClickTriangleColorChangeListener implements View.OnTouchListener {
         Point pB = rotateAroundCenter(xPos, yPos, Math.PI * 2 / 3);
         Point pG = rotateAroundCenter(xPos, yPos, Math.PI * 4 / 3);
 
-        progressChanged = true;
+        isColorChangeFromProgressbar = true;
         color.updatePreserveBrightness(calcColor(xPos, yPos), Mode.RED);
         color.updatePreserveBrightness(calcColor(pG.getX(), pG.getY()), Mode.GEEEN);
         color.updatePreserveBrightness(calcColor(pB.getX(), pB.getY()), Mode.BLUE);
-        progressChanged = false;
+        isColorChangeFromProgressbar = false;
     }
 
     private int calcColor(double x, double y) {
@@ -216,7 +224,4 @@ public class ClickTriangleColorChangeListener implements View.OnTouchListener {
         return Math.max(minX, Math.min(maxX, x));
     }
 
-    public boolean isProgressChanged() {
-        return progressChanged;
-    }
 }

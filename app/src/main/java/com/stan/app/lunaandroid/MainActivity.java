@@ -2,8 +2,6 @@ package com.stan.app.lunaandroid;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
-import android.bluetooth.le.ScanCallback;
-import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,16 +18,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.stan.app.lunaandroid.colorpattern.ColorPatternFragment;
 import com.stan.app.lunaandroid.colorpicker.SolidColorPickerFragment;
-import com.stan.app.lunaandroid.communication.ble.BLEConnector;
-import com.stan.app.lunaandroid.communication.ble.BLEScanner;
 import com.stan.app.lunaandroid.dialog.CheckListDialogFragment;
 import com.stan.app.lunaandroid.dialog.LoaderDialogFragment;
 import com.stan.app.lunaandroid.dialog.NoticeDialogListener;
+import com.stan.app.lunaandroid.settings.SettingsFragment;
 import com.stan.app.lunaandroid.util.PersistantData;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, NoticeDialogListener {
@@ -60,13 +55,13 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction().replace(R.id.content, solidColorPickerFragment).commit();
 
         //initBT();
-        LoaderDialogFragment loaderDialogFragment = new LoaderDialogFragment();
+/*        LoaderDialogFragment loaderDialogFragment = new LoaderDialogFragment();
         loaderDialogFragment.onAttach((Context)this);
         loaderDialogFragment.show(getSupportFragmentManager(), LoaderDialogFragment.TAG);
 
         CheckListDialogFragment dialog = new CheckListDialogFragment();
         dialog.onAttach((Context) this);
-        dialog.show(getSupportFragmentManager(), CheckListDialogFragment.TAG);
+        dialog.show(getSupportFragmentManager(), CheckListDialogFragment.TAG);*/
     }
 
 
@@ -75,6 +70,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
+        PersistantData.savePersistantValues(getApplicationContext());
     }
 
     @Override
