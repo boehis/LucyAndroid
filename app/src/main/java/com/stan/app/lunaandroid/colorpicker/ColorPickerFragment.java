@@ -2,22 +2,31 @@ package com.stan.app.lunaandroid.colorpicker;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.FrameLayout;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.stan.app.lunaandroid.R;
 import com.stan.app.lunaandroid.colorpicker.action.BrightnessSeekbarChangeListener;
 import com.stan.app.lunaandroid.colorpicker.action.ClickTriangleColorChangeListener;
 import com.stan.app.lunaandroid.colorpicker.action.ColorSeekBarChangeListener;
+import com.stan.app.lunaandroid.colorpicker.action.HexInputChangeListener;
 import com.stan.app.lunaandroid.util.ColorChangeListener;
 import com.stan.app.lunaandroid.util.ColorObserver;
 import com.stan.app.lunaandroid.util.ColorReceiver;
@@ -25,6 +34,8 @@ import com.stan.app.lunaandroid.util.Mode;
 import com.stan.app.lunaandroid.util.ObservableColor;
 import com.stan.app.lunaandroid.util.PersistantData;
 import com.stan.app.lunaandroid.util.Util;
+
+import static android.content.ContentValues.TAG;
 
 
 public class ColorPickerFragment extends Fragment {
@@ -98,6 +109,36 @@ public class ColorPickerFragment extends Fragment {
                 return false;
             }
         });
+
+        final EditText hexText = view.findViewById(R.id.hex_color_input);
+        hexText.setCursorVisible(false);
+        hexText.addTextChangedListener(new HexInputChangeListener(triangleBackground, color, hexText));
+        hexText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hexText.setCursorVisible(true);
+                hexText.setSelection(hexText.length());
+            }
+        });
+        hexText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                hexText.setCursorVisible(false);
+                return false;
+            }
+        });
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        view.findViewById(R.id.selector_holder).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                assert imm != null;
+                imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+                hexText.setCursorVisible(false);
+                return false;
+            }
+        });
+
+
         view.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {

@@ -48,8 +48,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="scalingPercent" value="108" />
-                                                <entry key="trimmed" value="true" />
+                                                <entry key="scalingPercent" value="94" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -59,10 +58,10 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="backgroundAssetType" value="COLOR" />
                                       <entry key="backgroundColor" value="d2b48c" />
-                                      <entry key="foregroundImage" value="C:\Users\simon\Desktop\Group 1 copy.png" />
+                                      <entry key="foregroundImage" value="C:\Users\simon\Downloads\launch_icon.png" />
                                       <entry key="legacyIconShape" value="NONE" />
+                                      <entry key="showGrid" value="true" />
                                       <entry key="webIconShape" value="NONE" />
                                     </map>
                                   </option>

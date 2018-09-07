@@ -16,6 +16,8 @@ import java.util.List;
 
 public class ColorPatternFragment extends Fragment implements ColorListFragment.OnColorChangeListener {
 
+    //Todo: add hex input for color upper left corner
+
     public ColorPatternFragment() {
         // Required empty public constructor
     }
